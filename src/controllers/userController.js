@@ -37,7 +37,6 @@ export async function registerUser(req, res) {
     const existingUser = await db.collection('users').findOne({ "email": newUser.email });
 
     if (existingUser) {
-        console.log(existingUser)
         res.sendStatus(422);
         return
     }
@@ -48,5 +47,6 @@ export async function registerUser(req, res) {
     delete newUser.confirmPassword;
 
     await db.collection('users').insertOne({ ...newUser, password: passwordHash })
+    
     res.sendStatus(200);
 }
