@@ -1,17 +1,10 @@
-import registerSchema from '../schemas/registerSchema.js';
 import bcrypt from 'bcrypt';
 import db from '../db.js';
 import { v4 as uuid } from 'uuid';
-import loginSchema from '../schemas/loginSchema.js';
 
-export async function signUp(req, res) {
+export async function signIn(req, res) {
     const { email, password } = req.body;
     const user = await db.collection('users').findOne({ email });
-    const validation = loginSchema.validate(req.body);
-
-    if (validation.error) {
-        return res.sendStatus(422);
-    }
 
     if (user && bcrypt.compareSync(password, user.password)) {
         const token = uuid();
@@ -26,20 +19,8 @@ export async function signUp(req, res) {
     }
 }
 
-export async function registerUser(req, res) {
+export async function signUp(req, res) {
     const newUser = req.body;
-    const validation = registerSchema.validate(newUser);
-
-    if (validation.error) {
-        return res.sendStatus(422);
-    }
-
-    const existingUser = await db.collection('users').findOne({ "email": newUser.email });
-
-    if (existingUser) {
-        res.sendStatus(422);
-        return
-    }
 
     const passwordHash = bcrypt.hashSync(newUser.password, 10);
 

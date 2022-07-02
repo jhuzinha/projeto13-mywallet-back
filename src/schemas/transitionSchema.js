@@ -1,7 +1,7 @@
 import joi from 'joi';
 
 const transitionSchema = joi.object({
-  value: joi.number().required(),
+  value: joi.string().required(),
   description: joi.string().required()
 });
 
