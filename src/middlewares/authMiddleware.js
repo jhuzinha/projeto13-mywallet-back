@@ -7,7 +7,6 @@ export async function validateToken(req, res, next) {
     const { authorization } = req.headers;
     const token = authorization?.replace('Bearer ', '');
     const existingUser = await db.collection("sessions").findOne({ "token": token } );
-    console.log(req.headers)
     if (existingUser === null) {
         res.sendStatus(401);
         return

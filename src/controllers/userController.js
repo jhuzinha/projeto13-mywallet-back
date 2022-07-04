@@ -13,7 +13,7 @@ export async function signIn(req, res) {
             userId: user._id,
             token
         })
-        return res.send(token);
+        return res.send({ token, name: user.name });
     } else {
         res.sendStatus(401);
     }
